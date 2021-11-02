@@ -14,9 +14,11 @@
 
           <input type="text" placeholder="Please input your Email">
 
-          <button>
-            PROCEED
-          </button>
+          <nuxt-link to="/appointment">
+            <button>
+              PROCEED
+            </button>
+          </nuxt-link>
       </div>
 
     </div>
