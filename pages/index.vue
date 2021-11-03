@@ -12,7 +12,13 @@
             Email
           </p>
 
-          <input type="text" placeholder="Please input your Email">
+          <input type="email" placeholder="Please input your Email" class="email">
+
+          <div class="checkbox">
+            <input type="checkbox" name="TandC" id="TandC">
+            <label>By proceeding with this Appointment System Form, 
+              you agree with the terms and condition of the people behind this technology</label><br>
+          </div>
 
           <nuxt-link to="/appointment">
             <button>
@@ -65,11 +71,17 @@ $primary-color: #3598DC;
         margin-left: auto;
         margin-right: auto;
         width: 65%;
+
+        .checkbox {
+          margin-left: 30px;
+          margin-top: 15px;
+        }
+
         p {
           color: #777777;
           padding-left: 30px;
         }
-        input {
+        .email {
           background-color: #F4F1F1;
           border-radius: 10px;
           height: 60px;
