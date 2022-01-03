@@ -9,10 +9,10 @@
 
       <div class="placeholder-class">
           <p>
-            Email
+            Name
           </p>
 
-          <input type="email" placeholder="Please input your Email" class="email">
+          <input type="text" placeholder="What is your name?" class="name">
 
           <div class="checkbox">
             <input type="checkbox" name="TandC" id="TandC">
@@ -30,6 +30,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+
+}
+</script>
+
 
 <style lang="scss" scoped>
 $primary-color: #3598DC;
@@ -81,7 +88,7 @@ $primary-color: #3598DC;
           color: #777777;
           padding-left: 30px;
         }
-        .email {
+        .name {
           background-color: #F4F1F1;
           border-radius: 10px;
           height: 60px;

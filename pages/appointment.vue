@@ -7,11 +7,15 @@
                     <label for="first_name">First Name</label><br>
                     <input type="text" placeholder="Input First Name" v-model="first_name"><br>
                     <label for="">Last Name</label><br>
-                    <input type="text" placeholder="Input Last Name"><br>
+                    <input type="text" placeholder="Input Last Name" v-model="last_name"><br>
                     <label for="">Contact Number</label><br>
-                    <input type="number" placeholder="Input Contact Number"><br>
+                    <input type="number" placeholder="Input Contact Number" v-model="contact_number"><br>
+                    <label for="">Email</label><br>
+                    <input type="email" placeholder="Input Email" v-model="email"><br>
                     <label for="">Appointment Location</label><br>
-                    <input type="text" placeholder="Input Appointment Location"><br>
+                    <input type="text" placeholder="Input Appointment Location" v-model="appointment_location"><br>
+                    <label for="">Appointment Purpose</label><br>
+                    <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
                     <label for="">Appointment date</label><br>
                     <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
                     <nuxt-link to="/timeavailability">
@@ -35,9 +39,42 @@
       return {
         time1: null,
         first_name: null,
-
+        last_name: null,
+        contact_number: null,
+        email: null,
+        appointment_location: null,
+        appointment_purpose: null
       };
     },
+    computed: {
+        hashFunction: function() {
+            function reverseString(str) {
+                var newString = "";
+                for (var i = str.length - 1; i >= 0; i--) {
+                    newString += str[i];
+                }
+                return newString;
+            }
+
+
+            String.prototype.hashCode = function() {
+                    var hash = 0;
+                    if (this.length == 0) {
+                        return hash;
+                    }
+                    for (var i = 0; i < this.length; i++) {
+                        var char = this.charCodeAt(i);
+                        hash = ((hash<<5)-hash)+char;
+                        hash = hash & hash; // Convert to 32bit integer
+                    }
+                    return hash;
+                }
+            
+            let hashRaw = reverseString(this.last_name) + this.time1.toString() + reverseString(this.first_name)
+
+            return hashRaw.hashCode() + hashRaw
+        }
+    }
   };     
 </script>
 
