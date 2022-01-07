@@ -13,6 +13,7 @@
     "nuxt": "^2.15.7",
     "qrcode.vue": "^3.3.3",
     "vee-validate": "^3.4.13",
+    "vue-qr": "^3.2.2",
     "vue2-datepicker": "^3.10.2",
     "vuetify": "^2.5.5"
   },

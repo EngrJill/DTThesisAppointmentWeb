@@ -18,7 +18,7 @@
                     <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
                     <label for="">Appointment date</label><br>
                     <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
-                    <nuxt-link to="/timeavailability">
+                    <nuxt-link :to="{ name: 'final', params: { code: hashFunction(), date: this.time1  } }">
                         <button>
                         PROCEED
                         </button>
@@ -32,23 +32,24 @@
 <script>
    import DatePicker from 'vue2-datepicker';
    import 'vue2-datepicker/index.css';
+   import VueQr from 'vue-qr';
 
   export default {
-    components: { DatePicker },
+    components: { DatePicker, VueQr },
     data() {
       return {
-        time1: null,
-        first_name: null,
-        last_name: null,
-        contact_number: null,
-        email: null,
-        appointment_location: null,
-        appointment_purpose: null
+        time1: '',
+        first_name: '',
+        last_name: '',
+        contact_number: '',
+        email: '',
+        appointment_location: '',
+        appointment_purpose: '',
       };
     },
-    computed: {
-        hashFunction: function() {
-            function reverseString(str) {
+    methods: {
+            hashFunction: function() {
+                function reverseString(str) {
                 var newString = "";
                 for (var i = str.length - 1; i >= 0; i--) {
                     newString += str[i];
@@ -72,7 +73,7 @@
             
             let hashRaw = reverseString(this.last_name) + this.time1.toString() + reverseString(this.first_name)
 
-            return hashRaw.hashCode() + hashRaw
+            return hashRaw.hashCode()
         }
     }
   };     
