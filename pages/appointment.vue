@@ -81,53 +81,57 @@
 
 <style lang="scss" scoped>
 $primary-color: #3598DC;
-    .main-container {
+     .main-container {
     font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
+    height: 150vh;
     width: 100vw;
     background-color: $primary-color;
-    padding-top: 100px;
+    padding: 100px 0px 0px;
     
         .landing-subcontainer {
-        height: 80%;
-        width: 60%;
+        height: 90%;
+        width: min(800px, 60%);
         background-color: white;
-        margin-left: auto;
-        margin-right: auto;
+        margin-inline: auto;
         border-radius: 5px;
 
             .form-container {
-                width: 85%;
-                margin-left: auto;
-                margin-right: auto;
+                width: min(800px, 85%);
+                margin-inline: auto;
                 
                 h3 {
                     padding-top: 50px;
                     padding-bottom: 30px;
+                    font-size: clamp(0.8rem, 2vw, 1.3rem);
                 }
 
                     form {
-                        margin-left: auto;
-                        margin-right: auto;
+                        width: min(80ch, 100% - 1rem);
+                        margin-inline: auto;
+                        font-size: clamp(0.8rem, 1.2vw, 1rem);
+
                         label {
                             color: #777777;
+                            font-size: clamp(0.6rem, 1.2vw, 1rem);
                         }
                         input {
                             background-color: #F4F1F1;
                             height: 46px;
-                            width: 100%;
+                            width: min(800px, 100%);
                             margin-top: 6px;
                             margin-bottom: 20px;
                             border-radius: 5px;
                             padding-left: 18px;
+                            font-size: clamp(0.6rem, 1.3vw, 1rem);
                         }
                         button {
                             background-color: $primary-color;
                             color: white;
-                            height: 40px;
-                            width: 30%;
+                            min-height: 40px;
+                            width: min(30vw, 30%);
                             border-radius: 10px;
                             margin-top: 20px;
+                            font-size: clamp(0.5rem, 1.5vw, 1rem);
                         }
                     }
             }
