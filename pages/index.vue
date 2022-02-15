@@ -9,19 +9,23 @@
 
       <div class="placeholder-class">
           <p>
-            Name
+            Name <span class="requiredTrigger"  :style="{display: requiredTrigger}"> &nbsp; *This field is required</span>
           </p>
 
-          <input type="text" placeholder="What is your name?" class="name">
+          <input type="text" placeholder="What is your name?" class="name" v-model="nname">
 
           <div class="checkbox">
-            <input type="checkbox" name="TandC" id="TandC">
-            <label>By proceeding with this Appointment System Form, 
-              you agree with the terms and condition of the people behind this technology</label><br>
+            <p>By proceeding with this Appointment System Form, 
+            you agree with the terms and condition of the people behind this technology</p>
+            <label class="cbox" for="agree" :style="{color: disable_black}">
+            <input id="agree" type="checkbox" value="agree" v-model="checked" checked>
+            <span class="checkmark"></span>
+            <span class="label">I Agree</span>
+            </label><br>
           </div>
 
-          <nuxt-link to="/appointment">
-            <button>
+          <nuxt-link :to="{ name: 'appointment', params: { nname: this.nname } }">
+            <button :disabled="stillDisable" :style="{backgroundColor: disable_blue}">
               PROCEED
             </button>
           </nuxt-link>
@@ -33,7 +37,43 @@
 
 <script>
 export default {
-
+    data() {
+      return {
+        nname: '',
+        checked: false
+      }
+    },
+    computed: {
+      disable_black: function() {
+        if (this.checked === false) {
+          return 'gray'
+        }
+        else {
+          return  'black'
+        }
+      },
+      disable_blue: function() {
+        if (this.nname.length != 0 && this.checked) {
+          return '#3598DC'
+        }
+        else {
+          return  'gray'
+        }
+      },
+      stillDisable: function() {
+        if (this.nname.length === 0 && this.checked) {
+          return true
+        }
+      },
+      requiredTrigger: function() {
+        if (this.nname.length === 0) {
+          return 'block'
+        }
+        else {
+          return 'none'
+        }
+      }
+    }
 }
 </script>
 
@@ -72,14 +112,56 @@ $primary-color: #3598DC;
       }
 
       .placeholder-class {
-        padding-top: 70px;
+        padding-top: 50px;
         margin-inline: auto;
         width: 65%;
 
+        p {
+          display: flex;
+          span {
+            font-size: 0.8em;
+            color: orange;
+          }
+        }
+
         .checkbox {
-          margin-left: 30px;
           margin-top: 15px;
           font-size: clamp(0.5rem, 0.10vw + 0.9vw, 0.96rem);
+
+          p {
+            color: black;
+          }
+
+          .cbox {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding-left: 32px;
+
+              .label {
+                font-size: 1em;
+              }
+
+              .checkmark {
+                  margin-right: 15px;
+                  width: 17px;
+                  height: 17px;
+                  border: 2px solid $primary-color;
+                  background: $primary-color url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/1200px-White_check.svg.png) center/1250% no-repeat;
+              }
+
+              input:checked + .checkmark {
+                  background-size: 60%;
+                  transition: background-size 0.25s cubic-bezier(0.7, 0, 0.18, 1.24);
+                  }
+
+              input {
+                display: none;
+              }
+          }
+
+          
         }
 
         p {
@@ -104,7 +186,6 @@ $primary-color: #3598DC;
           min-height: 6vh;
           width: min(30vw, 30%);
           border-radius: 10px;
-          margin-top: 20px;
           margin-left: 37%;
           font-size: clamp(0.5rem, 1.5vw, 1rem);
         }

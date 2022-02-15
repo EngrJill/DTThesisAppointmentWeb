@@ -2,7 +2,8 @@
     <div class="main-container">
         <div class="landing-subcontainer">
             <div class="form-container">
-            <h3>Kindly fill-out this form</h3>
+            <h3>Hello, {{this.$route.params.nname}}. Kindly fill-out this form</h3>
+            <p>All fields are required</p>
                 <form action="" class="form">
                     <label for="first_name">First Name</label><br>
                     <input type="text" placeholder="Input First Name" v-model="first_name"><br>
@@ -18,9 +19,9 @@
                     <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
                     <label for="">Appointment date</label><br>
                     <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
-                    <nuxt-link :to="{ name: 'final', params: { code: hashFunction(), date: this.time1  } }">
-                        <button>
-                        PROCEED
+                    <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
+                        <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
+                        PROCEED 
                         </button>
                     </nuxt-link>
                 </form>
@@ -46,6 +47,38 @@
         appointment_location: '',
         appointment_purpose: '',
       };
+    },
+    computed: {
+        btnDisabled: function() {
+            if (this.time1.length === 0 && 
+                this.first_name.length === 0 &&
+                this.last_name.length === 0 &&
+                this.contact_number.length === 0 &&
+                this.email.length === 0 &&
+                this.appointment_location.length === 0 &&
+                this.appointment_purpose.length === 0
+            ) {
+                return true
+            }
+            else {
+                return false
+            }
+        },
+        btnColorDisabled: function() {
+            if (this.time1.length === 0 && 
+                this.first_name.length === 0 &&
+                this.last_name.length === 0 &&
+                this.contact_number.length === 0 &&
+                this.email.length === 0 &&
+                this.appointment_location.length === 0 &&
+                this.appointment_purpose.length === 0
+            ) {
+                return 'gray'
+            }
+            else {
+                return '#3598DC'
+            }
+        }
     },
     methods: {
             hashFunction: function() {
@@ -74,7 +107,28 @@
             let hashRaw = reverseString(this.last_name) + this.time1.toString() + reverseString(this.first_name)
 
             return hashRaw.hashCode()
-        }
+        },
+
+        convertToReadableDate: function() {
+        let timeVar = this.time1
+        let month = {'01': "January", 
+                    "02": "February", 
+                    "03": "March",
+                    "04": "April",
+                    "05": "May",
+                    "06": "June",
+                    "07": "July",
+                    "08": "August",
+                    "09": "September",
+                    "10": "October",
+                    "11": "November",
+                    "12": "December"
+                    }
+                let readableMonth = timeVar.slice(5,7)
+                let readableDate = month[readableMonth] + " " + timeVar.slice(8,10) + ", " + timeVar.slice(0,4)
+
+                return readableDate
+            }
     }
   };     
 </script>
@@ -101,8 +155,13 @@ $primary-color: #3598DC;
                 
                 h3 {
                     padding-top: 50px;
-                    padding-bottom: 30px;
                     font-size: clamp(0.8rem, 2vw, 1.3rem);
+                }
+
+                p {
+                    color: orange;
+                    padding-bottom: 20px;
+                    font-size: 0.8em;
                 }
 
                     form {
