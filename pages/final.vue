@@ -5,7 +5,7 @@
       <div class="txt-container">
         <h1>Hello, {{this.$route.params.pangalan}} </h1>
         <h1>{{this.$route.params.time}}</h1>
-        <vue-qr :bgSrc='src' :logoSrc="src2" :text="hey()" :size="200"></vue-qr>
+        <vue-qr  colorDark="#3598DC" colorLight="white" margin="20" :text="hey()" size="200" > </vue-qr>
       </div>
     </div>
   </div>
@@ -46,6 +46,10 @@ $primary-color: #3598DC;
         padding-top: 50px;
         margin-inline: auto;
         width: min(200px, 65%);
+
+          vue-qr {
+            border: black;
+          }
 
       }
     }

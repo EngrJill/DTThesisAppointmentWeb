@@ -3,7 +3,7 @@
         <div class="landing-subcontainer">
             <div class="form-container">
             <h3>Hello, {{this.$route.params.nname}}. Kindly fill-out this form</h3>
-            <p>All fields are required</p>
+            <p :style="{display: requiredTrigger}">All fields are required</p>
                 <form action="" class="form">
                     <label for="first_name">First Name</label><br>
                     <input type="text" placeholder="Input First Name" v-model="first_name"><br>
@@ -19,6 +19,7 @@
                     <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
                     <label for="">Appointment date</label><br>
                     <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
+                    <p :style="{display:dateChecker}">The Date must be a Future Date</p>
                     <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
                         <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
                         PROCEED 
@@ -50,33 +51,61 @@
     },
     computed: {
         btnDisabled: function() {
-            if (this.time1.length === 0 && 
-                this.first_name.length === 0 &&
-                this.last_name.length === 0 &&
-                this.contact_number.length === 0 &&
-                this.email.length === 0 &&
-                this.appointment_location.length === 0 &&
-                this.appointment_purpose.length === 0
+            if (this.time1.length != 0 && 
+                this.first_name.length != 0 &&
+                this.last_name.length != 0 &&
+                this.contact_number.length != 0 &&
+                this.email.length != 0 &&
+                this.appointment_location.length != 0 &&
+                this.appointment_purpose.length != 0 &&
+                (+new Date() < +new Date(this.time1))
             ) {
-                return true
+                return false
             }
             else {
-                return false
+                return true
             }
         },
         btnColorDisabled: function() {
-            if (this.time1.length === 0 && 
-                this.first_name.length === 0 &&
-                this.last_name.length === 0 &&
-                this.contact_number.length === 0 &&
-                this.email.length === 0 &&
-                this.appointment_location.length === 0 &&
-                this.appointment_purpose.length === 0
+            if (this.time1.length != 0 && 
+                this.first_name.length != 0 &&
+                this.last_name.length != 0 &&
+                this.contact_number.length != 0 &&
+                this.email.length != 0 &&
+                this.appointment_location.length != 0 &&
+                this.appointment_purpose.length != 0 &&
+                (+new Date() < +new Date(this.time1))
+
             ) {
-                return 'gray'
+                return '#3598DC'
             }
             else {
-                return '#3598DC'
+                return 'gray'
+            }
+        },
+        requiredTrigger: function() {
+            if (this.time1.length != 0 && 
+                this.first_name.length != 0 &&
+                this.last_name.length != 0 &&
+                this.contact_number.length != 0 &&
+                this.email.length != 0 &&
+                this.appointment_location.length != 0 &&
+                this.appointment_purpose.length != 0
+            ) {
+                return 'none'
+            }
+            else {
+                return 'block'
+            }
+        },
+        dateChecker: function() {
+            let now = +new Date();
+            let setDate = +new Date(this.time1)
+
+            if (now > setDate) {
+                return 'block'
+            } else {
+                return 'none'
             }
         }
     },
@@ -160,11 +189,11 @@ $primary-color: #3598DC;
 
                 p {
                     color: orange;
-                    padding-bottom: 20px;
                     font-size: 0.8em;
                 }
 
                     form {
+                        padding-top: 20px;
                         width: min(80ch, 100% - 1rem);
                         margin-inline: auto;
                         font-size: clamp(0.8rem, 1.2vw, 1rem);
