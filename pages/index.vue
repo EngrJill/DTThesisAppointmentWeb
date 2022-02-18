@@ -82,13 +82,13 @@ export default {
 $primary-color: #3598DC;
    .main-container {
     font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: min(100vw, 100%);
     background-color: $primary-color;
-    padding: 100px 0px 0px;
+    padding: 100px 0px 100px 0px;
     
     .landing-subcontainer {
-      height: 80%;
+      height: 70vh;
       width: min(800px, 60%);
       background-color: white;
       margin-inline: auto;
@@ -140,12 +140,12 @@ $primary-color: #3598DC;
             padding-left: 32px;
 
               .label {
-                font-size: 1em;
+                font-size: clamp(0.5rem, 0.10vw + 0.9vw, 0.96rem);
               }
 
               .checkmark {
                   margin-right: 15px;
-                  width: 17px;
+                  width:  min(17px, 30%);
                   height: 17px;
                   border: 2px solid $primary-color;
                   background: $primary-color url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/1200px-White_check.svg.png) center/1250% no-repeat;
@@ -187,6 +187,7 @@ $primary-color: #3598DC;
           width: min(30vw, 30%);
           border-radius: 10px;
           margin-left: 37%;
+          transform: translateY(-50%);
           font-size: clamp(0.5rem, 1.5vw, 1rem);
         }
       }
