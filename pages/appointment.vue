@@ -22,8 +22,10 @@
                     <label for="">Appointment date</label><br>
                     <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
                     <p :style="{display:dateChecker}">The Date must be a Future Date</p>
-                    <h1 v-if="isSuccess">Congratulations, Appointment Approved</h1>
-                    <p v-if="isSuccess">Please click the <strong>View QR</strong> to View your QR Code</p>
+                        <div class="success" v-if="isSuccess">
+                            <h5>Congratulations, Appointment Approved!</h5>
+                            <p>Please click the <strong>View QR</strong> to View your QR Code</p>
+                        </div>
                     <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify Appointment</button>
                     <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
                         <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
@@ -55,6 +57,7 @@
         appointment_location: '',
         appointment_purpose: '',
         isSuccess: false,
+        qrCode: ''
       };
     },
     computed: {
@@ -186,6 +189,8 @@
             
             let hashRaw = reverseString(this.last_name) + this.time1.toString() + reverseString(this.first_name)
 
+            this.qrCode = hashRaw.hashCode().toString()
+
             return hashRaw.hashCode()
         },
 
@@ -212,7 +217,7 @@
 
         onCreatePost() {
             axios
-                .post('http://127.0.0.1:8000/api/user_details',{
+                .post('http://127.0.0.1:8000/api/user_appointment_details',{
                               "name": this.first_name + " " + this.last_name,
                               "address": this.address,
                               "phoneNumber": this.contact_number,
@@ -220,7 +225,8 @@
                               "appointmentStart": this.time1 + " 00:00:00",
                               "appointmentEnd": this.time1 + " 23:59:59",
                               "placeAppointment": this.appointment_location,
-                              "purposeAppointment": this.appointment_purpose
+                              "purposeAppointment": this.appointment_purpose,
+                              "qrCode": this.qrCode
                               })
                 .then((response) => {
                     this.isSuccess = true;
@@ -267,6 +273,24 @@ $primary-color: #3598DC;
                         width: min(80ch, 100% - 1rem);
                         margin-inline: auto;
                         font-size: clamp(0.8rem, 1.2vw, 1rem);
+
+                        .success {
+                            background-color: #b5ffce;
+                            height: 46px;
+                            width: min(800px, 100%);
+                            margin-top: 6px;
+                            border-radius: 5px;
+                            padding-left: 18px;
+                            font-size: 1em;
+                            border: solid rgb(80, 235, 80) 2px;
+                                h5 {
+                                    margin-top: 1.5%;
+                                    font-size: 1.1em;
+                                }
+                                p {
+                                    color: rgb(68, 68, 68)
+                                }
+                        }
 
                         label {
                             color: #777777;
