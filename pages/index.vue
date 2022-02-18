@@ -140,12 +140,12 @@ $primary-color: #3598DC;
             padding-left: 32px;
 
               .label {
-                font-size: 1em;
+                font-size: clamp(0.5rem, 0.10vw + 0.9vw, 0.96rem);
               }
 
               .checkmark {
                   margin-right: 15px;
-                  width: 17px;
+                  width:  min(17px, 30%);
                   height: 17px;
                   border: 2px solid $primary-color;
                   background: $primary-color url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/1200px-White_check.svg.png) center/1250% no-repeat;
