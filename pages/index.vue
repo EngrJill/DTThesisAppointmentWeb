@@ -82,13 +82,13 @@ export default {
 $primary-color: #3598DC;
    .main-container {
     font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: min(100vw, 100%);
     background-color: $primary-color;
-    padding: 100px 0px 0px;
+    padding: 100px 0px 100px 0px;
     
     .landing-subcontainer {
-      height: 80%;
+      height: 70vh;
       width: min(800px, 60%);
       background-color: white;
       margin-inline: auto;
@@ -187,6 +187,7 @@ $primary-color: #3598DC;
           width: min(30vw, 30%);
           border-radius: 10px;
           margin-left: 37%;
+          transform: translateY(-50%);
           font-size: clamp(0.5rem, 1.5vw, 1rem);
         }
       }

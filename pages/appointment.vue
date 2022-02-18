@@ -18,7 +18,7 @@
                     <label for="">Appointment Purpose</label><br>
                     <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
                     <label for="">Appointment date</label><br>
-                    <date-picker style="height: 46px" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
+                    <date-picker style="height: 46px; width: min(220px, 50%)" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
                     <p :style="{display:dateChecker}">The Date must be a Future Date</p>
                     <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
                         <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
@@ -166,10 +166,10 @@
 $primary-color: #3598DC;
      .main-container {
     font-family: Arial, Helvetica, sans-serif;
-    height: 150vh;
-    width: 100vw;
+    height: 150%;
+    width: min(100vw, 100%);
     background-color: $primary-color;
-    padding: 100px 0px 0px;
+    padding: 100px 0px 100px 0px;
     
         .landing-subcontainer {
         height: 90%;
@@ -181,6 +181,7 @@ $primary-color: #3598DC;
             .form-container {
                 width: min(800px, 85%);
                 margin-inline: auto;
+                padding: 0px 0px 100px 0px;
                 
                 h3 {
                     padding-top: 50px;
