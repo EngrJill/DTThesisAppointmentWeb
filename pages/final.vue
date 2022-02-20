@@ -3,10 +3,11 @@
   <div class="main-container">
     <div class="landing-subcontainer">
       <div class="txt-container">
+        <h1>Hello World</h1>
         <h3>Hi, {{this.$route.params.pangalan}}. </h3>
         <h3>This is DreamTeam01 reminding you about your scheduled appointment on {{this.$route.params.time}}. See you then!</h3>
-        <vue-qr  colorDark="#3598DC" colorLight="white" margin="20" :text="hey()" style="width: min(500vw, 70%)" > </vue-qr>
-        <a href="downloadLink" download>
+        <vue-qr  id="vueQr" colorDark="#3598DC" colorLight="white" margin="20" :text="hey()" style="width: min(500vw, 70%)" > </vue-qr>
+        <a :href="this.vueQrData" download>
         <button>Save QR</button>
         </a>
       </div>
@@ -30,18 +31,27 @@
 import VueQr from 'vue-qr'
 
 export default {
+    data() {
+      return {
+        vueQrData: ''
+      }
+    },
     components: {
       VueQr
     },
 
     computed: {
+            qrLink: function() {
+            let qrLinkData = document.getElementById('vueQr').src 
+            return this.vueQrData = qrLinkData
 
+        },
     },
 
     methods: {
       hey: function() {
         return this.$route.params.code.toString()
-      }
+      },
     }
 }
 
