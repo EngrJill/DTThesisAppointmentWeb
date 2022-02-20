@@ -7,7 +7,7 @@
         <h3>Hi, {{this.$route.params.pangalan}}. </h3>
         <h3>This is DreamTeam01 reminding you about your scheduled appointment on {{this.$route.params.time}}. See you then!</h3>
         <vue-qr  id="vueQr" colorDark="#3598DC" colorLight="white" margin="20" :text="hey()" style="width: min(500vw, 70%)" > </vue-qr>
-        <a :href="this.vueQrData" download>
+        <a :href="this.vueQrData" :download="this.filename">
         <button>Save QR</button>
         </a>
       </div>
@@ -33,7 +33,8 @@ import VueQr from 'vue-qr'
 export default {
     data() {
       return {
-        vueQrData: ''
+        vueQrData: '',
+        filename: this.$route.params.pangalan + "_QRCode.png",
       }
     },
     components: {
@@ -44,7 +45,6 @@ export default {
             qrLink: function() {
             let qrLinkData = document.getElementById('vueQr').src 
             return this.vueQrData = qrLinkData
-
         },
     },
 
