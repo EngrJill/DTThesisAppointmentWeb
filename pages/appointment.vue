@@ -57,7 +57,8 @@
         appointment_location: '',
         appointment_purpose: '',
         isSuccess: false,
-        qrCode: ''
+        qrCode: '',
+
       };
     },
     computed: {
@@ -217,7 +218,7 @@
 
         onCreatePost() {
             axios
-                .post('http://127.0.0.1:8000/api/user_appointment_details',{
+                .post('http://dt-iotdoorlock.online//api/user_appointment_details',{
                               "name": this.first_name + " " + this.last_name,
                               "address": this.address,
                               "phoneNumber": this.contact_number,
