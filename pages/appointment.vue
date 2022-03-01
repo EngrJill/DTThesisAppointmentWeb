@@ -218,7 +218,7 @@
 
         onCreatePost() {
             axios
-                .post('http://dt-iotdoorlock.online//api/user_appointment_details',{
+                .post('http://dt-iotdoorlock.online/api/user_appointment_details',{
                               "name": this.first_name + " " + this.last_name,
                               "address": this.address,
                               "phoneNumber": this.contact_number,
