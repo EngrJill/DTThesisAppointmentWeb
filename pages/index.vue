@@ -2,33 +2,37 @@
   <div class="main-container">
     <div class="landing-subcontainer">
 
-      <div class="txt-container">
-        <h1>Welcome to Advanced Appointment Systems</h1>
-        <h5>Your contact-proof appointment gateway</h5>
-      </div>
+        <img src="https://images.unsplash.com/photo-1521386455230-4ceaa25b72be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="lock" class="image">
 
-      <div class="placeholder-class">
-          <p>
-            Name <span class="requiredTrigger"  :style="{display: requiredTrigger}"> &nbsp; *This field is required</span>
-          </p>
-
-          <input type="text" placeholder="What is your name?" class="name" v-model="nname">
-
-          <div class="checkbox">
-            <p>By proceeding with this Appointment System Form, 
-            you agree with the terms and condition of the people behind this technology</p>
-            <label class="cbox" for="agree" :style="{color: disable_black}">
-            <input id="agree" type="checkbox" value="agree" v-model="checked" checked>
-            <span class="checkmark"></span>
-            <span class="label">I Agree</span>
-            </label><br>
+        <div class="text-container-main">  
+          <div class="txt-container">
+            <h1>WELCOME TO DT IOT LOCKING SYSTEM WEBSITE</h1>
+            <h5>Your contact-proof appointment gateway</h5>
           </div>
 
-          <nuxt-link :to="{ name: 'appointment', params: { nname: this.nname } }">
-            <button :disabled="stillDisable" :style="{backgroundColor: disable_blue}">
-              PROCEED
-            </button>
-          </nuxt-link>
+          <div class="placeholder-class">
+              <p>
+                Name <span class="requiredTrigger"  :style="{display: requiredTrigger}"> &nbsp; *This field is required</span>
+              </p>
+
+              <input type="text" placeholder="What is your name?" class="name" v-model="nname">
+
+              <div class="checkbox">
+                <p>By proceeding with this Appointment System Form, 
+                you agree with the terms and condition of the people behind this technology</p>
+                <label class="cbox" for="agree" :style="{color: disable_black}">
+                <input id="agree" type="checkbox" value="agree" v-model="checked" checked>
+                <span class="checkmark"></span>
+                <span class="label">I Agree</span>
+                </label><br>
+              </div>
+
+              <nuxt-link :to="{ name: 'appointment', params: { nname: this.nname } }">
+                <button :disabled="stillDisable" :style="{backgroundColor: disable_blue}">
+                  PROCEED
+                </button>
+              </nuxt-link>
+          </div>
       </div>
 
     </div>
@@ -54,7 +58,7 @@ export default {
       },
       disable_blue: function() {
         if (this.nname.length != 0 && this.checked) {
-          return '#3598DC'
+          return '#4B8DFB'
         }
         else {
           return  'gray'
@@ -83,117 +87,128 @@ $primary-color: #3598DC;
    .main-container {
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
-    width: min(100vw, 100%);
-    background-color: $primary-color;
+    width: 100%;
+    background-color: #FFFFFF;
     padding: 100px 0px 100px 0px;
     
     .landing-subcontainer {
       height: 70vh;
-      width: min(800px, 60%);
+      margin-left: 20%;
+      margin-right: 20%;
       background-color: white;
-      margin-inline: auto;
-      border-radius: 5px;
-      
+      border: solid 1px #bdbdbd;
 
-      .txt-container {
-        padding-top: 50px;
-        margin-inline: auto;
-        width: min(500px, 65%);
-        h1 {
-          font-size: clamp(0.8rem, 3vw, 4rem);
-          text-align: center;
-        }
-        h5 {
-          font-size: clamp(0.7rem, 2vw, 1.3rem);
-          font-weight: 300;
-          padding-top: 10px;
-          text-align: center;
-        }
+      .image {
+        width: 30%;
+        height: 100%;
+        object-fit: cover;
       }
+      
+      .text-container-main {
+        width: 70%;
+        float: right;
 
-      .placeholder-class {
-        padding-top: 50px;
-        margin-inline: auto;
-        width: 65%;
-
-        p {
-          display: flex;
-          span {
+        .txt-container {
+          padding-top: 50px;
+          margin-inline: auto;
+          width: 80%;
+          h1 {
+            text-align: right;
+          }
+          h5 {
+            font-weight: 300;
+            padding-top: 14px;
             font-size: 0.8em;
-            color: orange;
+            text-align: right;
           }
         }
 
-        .checkbox {
-          margin-top: 15px;
-          font-size: clamp(0.5rem, 0.10vw + 0.9vw, 0.96rem);
+        .placeholder-class {
+          padding-top: 50px;
+          margin-left: 20px;
+          margin-right: 20px;
 
           p {
-            color: black;
-          }
-
-          .cbox {
-            cursor: pointer;
             display: flex;
-            align-items: center;
-            margin: 10px 0;
-            padding-left: 32px;
-
-              .label {
-                font-size: clamp(0.5rem, 0.10vw + 0.9vw, 0.96rem);
-              }
-
-              .checkmark {
-                  margin-right: 15px;
-                  width:  min(17px, 30%);
-                  height: 17px;
-                  border: 2px solid $primary-color;
-                  background: $primary-color url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/1200px-White_check.svg.png) center/1250% no-repeat;
-              }
-
-              input:checked + .checkmark {
-                  background-size: 60%;
-                  transition: background-size 0.25s cubic-bezier(0.7, 0, 0.18, 1.24);
-                  }
-
-              input {
-                display: none;
-              }
+            color: #777777;
+            text-align: left;
+            padding-left: 6%;
+            margin-bottom: 6px;
+            span {
+              font-size: 0.8em;
+              color: orange;
+            }
           }
 
-          
-        }
+          .checkbox {
+            margin-top: 15px;
 
-        p {
-          color: #777777;
-          text-align: left;
-          padding-left: 6%;
-          font-size: clamp(0.5rem, 1vw, 0.9rem);
-        }
-        .name {
-          background-color: #F4F1F1;
-          border-radius: 10px;
-          height: 8vh;
-          width:min(500px, 95%);
-          margin-top: 10px;
-          margin-left: 5%;
-          padding-left: 14px;
-          font-size: clamp(0.5rem, 1vw, 0.9rem);
-        }
-        button {
-          background-color: $primary-color;
-          color: white;
-          min-height: 6vh;
-          width: min(30vw, 30%);
-          border-radius: 10px;
-          margin-left: 37%;
-          transform: translateY(-50%);
-          font-size: clamp(0.5rem, 1.5vw, 1rem);
-        }
+            p {
+              color: black;
+              font-size: 14px;
+            }
+
+            .cbox {
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              margin-left:6%;
+              margin-top: 10px;
+              padding-left: 32px;
+
+                .checkmark {
+                    margin-right: 15px;
+                    width:  17px;
+                    height: 17px;
+                    border: 2px solid $primary-color;
+                    background: $primary-color url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/White_check.svg/1200px-White_check.svg.png) center/1250% no-repeat;
+                }
+
+                input:checked + .checkmark {
+                    background-size: 60%;
+                    transition: background-size 0.25s cubic-bezier(0.7, 0, 0.18, 1.24);
+                    }
+
+                input {
+                  display: none;
+                }
+            }
+
+            
+          }
+
+          .name {
+            background-color: #FFFFFF;
+            height: 6vh;
+            border: #777777 solid 1px;
+            width: 90%;
+            padding-left: 7px;
+            margin-left:6%;
+          }
+          button {
+            margin-top: 50px;
+            background-color: #4B8DFB;
+            color: white;
+            min-height: 6vh;
+            width: min(30vw, 30%);
+            margin-left: 37%;
+            transform: translateY(-50%);
+          }
+          }
       }
 
     }
 
+   
   }
+
+   @media screen and (max-width:950px) {
+      .main-container {
+        .landing-subcontainer {
+          margin-left: 5%;
+          margin-right: 5%;
+        }
+      }
+    }
 
 </style>
