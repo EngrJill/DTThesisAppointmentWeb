@@ -2,26 +2,22 @@
 <template>
   <div class="main-container">
     <div class="landing-subcontainer">
-      <div class="txt-container">
-        <h1>Hello World</h1>
-        <h3>Hi, {{this.$route.params.pangalan}}. </h3>
-        <h3>This is DreamTeam01 reminding you about your scheduled appointment on {{this.$route.params.time}}. See you then!</h3>
-        <vue-qr  id="vueQr" colorDark="#3598DC" colorLight="white" margin="20" :text="hey()" style="width: min(500vw, 70%)" > </vue-qr>
-        <a :href="this.vueQrData" :download="this.filename">
-        <button>Save QR</button>
-        </a>
+       <div class="header">
+          <div class="content">
+            <h1> <span style="font-weight: 200" >See you on </span> {{this.$route.params.time}}, {{this.$route.params.pangalan}} </h1>
+            <p>These are the Instructions we made for your convenience using our device</p>
+          </div>
       </div>
-      <div class="txt-notes">
-        <h4>We are excited to see you when you arrive at our DreamTeam01 facility!</h4>
-        <br>
-        <h4>The following are some tips to help you know what to expect once you arrive at our office:</h4> 
-        <br>    
-            <ol>
-              <li>Please arrive on time for your appointment.</li>
-              <li>The locking system will take your temperature at the front door.</li>
-              <li>The system will confirm your QR Code.</li>
-              <li>Masks MUST be worn at all times in all of our facility.</li>
-            </ol> 
+      <div class="txt-container">
+          <p>1. Save this QR Code</p>
+          <vue-qr  id="vueQr" colorDark="black" colorLight="white" margin=20 :text="this.$route.params.code" style="width: min(500vw, 70%)" size=300 > </vue-qr>
+          <a :href="this.vueQrData" :download="this.filename">
+            <button @click="downloadQR()">Save QR</button>
+          </a>
+          <p>2. Tap the Scan QR button on the device monitor </p>
+          <p>3. Scan the QR Code</p>
+          <p>4. Scan your Temperature by placing your hand in front of the IR Temperature Scanner</p>
+          <p>5. Thats it! The Door Lock will unlock by now!</p>
       </div>
     </div>
   </div>
@@ -35,23 +31,18 @@ export default {
       return {
         vueQrData: '',
         filename: this.$route.params.pangalan + "_QRCode.png",
+        qrCode: this.$route.params.code
       }
     },
     components: {
       VueQr
     },
 
-    computed: {
-            qrLink: function() {
-            let qrLinkData = document.getElementById('vueQr').src 
-            return this.vueQrData = qrLinkData
-        },
-    },
-
     methods: {
-      hey: function() {
-        return this.$route.params.code.toString()
-      },
+      downloadQR: function() {
+          let qrLinkData = document.getElementById('vueQr').src 
+          return this.vueQrData = qrLinkData
+      }
     }
 }
 
@@ -68,22 +59,48 @@ $primary-color: #3598DC;
     
     .landing-subcontainer {
       height: 70vh;
-      max-width: min(800vw, 60%);
+      width: min(800vw, 60%);
       background-color: white;
       margin-inline: auto;
-      border-radius: 5px;
       display: table;
       clear: both;
 
+      .header {
+                height: 120px;
+                background-color: aliceblue;
+                height: auto;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 10px;
+                position: relative;
+                
+                .content {
+                    text-align: center;
+                    height: auto;
+                    margin: 0 auto;
+                    padding: 10px;
+                    position: relative;
+
+                    h3 {
+                        font-size: 2em;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+
       .txt-container {
-        padding-top: 50px;
-        margin-left: 8%;
-        width: min(320px, 65%);
-        float: left;
+        padding-top: 20px;
+        width: min(400px, 65%);
+        margin-left: auto;
+        margin-right: auto;
+        padding-bottom: 40px;
 
         h3{
         font-size: clamp(0.5rem, 1.3vw, 1.4rem);
         line-height: 1.3;
+        }
+        p {
+          margin-bottom: 7px;
         }
 
           vue-qr {
@@ -95,32 +112,21 @@ $primary-color: #3598DC;
           background-color: $primary-color;
           color: white;
           min-height: 5vh;
-          width: min(30vw, 30%);
-          border-radius: 10px;
-          margin-top: 23%;
-          float: right;
-          font-size: clamp(0.5rem, 1.1vw, 1rem);
+          width: 80%;
+          margin-bottom: 15px;
           }
-
-      }
-      .txt-notes{
-        padding-top: 50px;
-        padding-bottom: 40px;
-        margin-left: 8%;
-        float: left;
-        width: min(260px, 65%);
-
-        h4{
-        font-size: clamp(0.5rem, 1vw, 1.2rem);
-        line-height: 1.8;
-        }
-
-        li{
-        font-size: clamp(0.5rem, 1vw, 1.1rem);
-        line-height: 1.8;
-        }
 
       }
     }
   }
+
+  @media screen and (max-width: 700px) {
+    .main-container {
+        .landing-subcontainer {
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+    }
+}
 </style>

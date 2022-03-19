@@ -1,9 +1,14 @@
 <template>
     <div class="main-container">
         <div class="landing-subcontainer">
+            <div class="header">
+                <div class="content">
+                    <h3>Hello, {{this.$route.params.nname}}. Good Day!</h3>
+                    <h7>Kindly fill-out this form for your Appointment</h7>
+                    <p :style="{display: requiredTrigger}">All fields are required</p>
+                </div>
+            </div>
             <div class="form-container">
-            <h3>Hello, {{this.$route.params.nname}}. Kindly fill-out this form</h3>
-            <p :style="{display: requiredTrigger}">All fields are required</p>
                 <form @submit.prevent="onCreatePost" class="form">
                     <label for="first_name">First Name</label><br>
                     <input type="text" placeholder="Input First Name" v-model="first_name"><br>
@@ -23,10 +28,10 @@
                     <date-picker style="height: 46px; width: min(220px, 50%)" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
                     <p :style="{display:dateChecker}">The Date must be a Future Date</p>
                         <div class="success" v-if="isSuccess">
-                            <h5>Congratulations, Appointment Approved!</h5>
+                            <h5>Appointment Verified!</h5>
                             <p>Please click the <strong>View QR</strong> to View your QR Code</p>
                         </div>
-                    <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify Appointment</button>
+                    <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify</button>
                     <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
                         <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
                         View QR
@@ -58,7 +63,6 @@
         appointment_purpose: '',
         isSuccess: false,
         qrCode: '',
-
       };
     },
     computed: {
@@ -154,10 +158,7 @@
             }
         },
         dateChecker: function() {
-            let now = +new Date();
-            let setDate = +new Date(this.time1)
-
-            if (now > setDate) {
+            if (+new Date() >= +new Date(this.time1)) {
                 return 'block'
             } else {
                 return 'none'
@@ -192,7 +193,7 @@
 
             this.qrCode = hashRaw.hashCode().toString()
 
-            return hashRaw.hashCode()
+            return hashRaw.hashCode().toString()
         },
 
         convertToReadableDate: function() {
@@ -242,61 +243,75 @@
 <style lang="scss" scoped>
 $primary-color: #3598DC;
      .main-container {
-    font-family: Arial, Helvetica, sans-serif;
-    height: 150%;
-    width: min(100vw, 100%);
-    background-color: $primary-color;
-    padding: 100px 0px 100px 0px;
+        font-family: Arial, Helvetica, sans-serif;
+        height: 150%;
+        width: min(100vw, 100%);
+        background-color: $primary-color;
+        padding: 100px 0px 100px 0px;
     
         .landing-subcontainer {
-        height: 90%;
-        width: min(800px, 60%);
-        background-color: white;
-        margin-inline: auto;
-        border-radius: 5px;
+            height: 90%;
+            width: min(800px, 60%);
+            background-color: white;
+            margin-inline: auto;
+
+            .header {
+                height: 120px;
+                background-color: aliceblue;
+                height: auto;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 10px;
+                position: relative;
+                
+                .content {
+                    text-align: center;
+                    height: auto;
+                    margin: 0 auto;
+                    padding: 10px;
+                    position: relative;
+
+                    h3 {
+                        font-size: 2em;
+                        margin-bottom: 10px;
+                    }
+                    p {
+                        color: orange;
+                    }
+                }
+            }
 
             .form-container {
+
                 width: min(800px, 85%);
                 margin-inline: auto;
                 padding: 0px 0px 100px 0px;
                 
-                h3 {
-                    padding-top: 50px;
-                    font-size: clamp(0.8rem, 2vw, 1.3rem);
-                }
-
-                p {
-                    color: orange;
-                    font-size: 0.8em;
-                }
 
                     form {
                         padding-top: 20px;
                         width: min(80ch, 100% - 1rem);
                         margin-inline: auto;
-                        font-size: clamp(0.8rem, 1.2vw, 1rem);
 
                         .success {
-                            background-color: #b5ffce;
-                            height: 46px;
-                            width: min(800px, 100%);
-                            margin-top: 6px;
-                            border-radius: 5px;
+                            background-color: #8AFF80;
+                            height: auto;
+                            margin: auto;
+                            padding: 1% 0;
+                            width: 100%;
                             padding-left: 18px;
-                            font-size: 1em;
-                            border: solid rgb(80, 235, 80) 2px;
+                            text-align: center;
                                 h5 {
-                                    margin-top: 1.5%;
-                                    font-size: 1.1em;
+                                    font-size: 1.3em;
                                 }
                                 p {
-                                    color: rgb(68, 68, 68)
+                                    color: rgb(68, 68, 68);
+                                    font-size: 1em;
                                 }
                         }
 
                         label {
                             color: #777777;
-                            font-size: clamp(0.6rem, 1.2vw, 1rem);
                         }
                         input {
                             background-color: #F4F1F1;
@@ -304,18 +319,14 @@ $primary-color: #3598DC;
                             width: min(800px, 100%);
                             margin-top: 6px;
                             margin-bottom: 20px;
-                            border-radius: 5px;
                             padding-left: 18px;
-                            font-size: clamp(0.6rem, 1.3vw, 1rem);
                         }
                         button {
                             background-color: $primary-color;
                             color: white;
-                            min-height: 40px;
-                            width: min(30vw, 30%);
-                            border-radius: 10px;
+                            height: 38px;
+                            width:48%;
                             margin-top: 20px;
-                            font-size: clamp(0.5rem, 1.5vw, 1rem);
                         }
                     }
             }
@@ -323,4 +334,14 @@ $primary-color: #3598DC;
         }
 
     }
+
+@media screen and (max-width: 700px) {
+    .main-container {
+        .landing-subcontainer {
+            width: 80%;
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+    }
+}
 </style>

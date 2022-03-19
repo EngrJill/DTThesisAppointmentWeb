@@ -88,7 +88,7 @@ $primary-color: #3598DC;
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: $primary-color;
     padding: 100px 0px 100px 0px;
     
     .landing-subcontainer {
@@ -97,6 +97,7 @@ $primary-color: #3598DC;
       margin-right: 20%;
       background-color: white;
       border: solid 1px #bdbdbd;
+      box-shadow: #777777 0px 0px 18px;
 
       .image {
         width: 30%;
@@ -124,7 +125,7 @@ $primary-color: #3598DC;
         }
 
         .placeholder-class {
-          padding-top: 50px;
+          padding-top: 30px;
           margin-left: 20px;
           margin-right: 20px;
 
@@ -152,8 +153,7 @@ $primary-color: #3598DC;
               cursor: pointer;
               display: flex;
               align-items: center;
-              margin-left:6%;
-              margin-top: 10px;
+              padding: 10px 0;
               padding-left: 32px;
 
                 .checkmark {
@@ -186,13 +186,12 @@ $primary-color: #3598DC;
             margin-left:6%;
           }
           button {
-            margin-top: 50px;
             background-color: #4B8DFB;
             color: white;
-            min-height: 6vh;
-            width: min(30vw, 30%);
-            margin-left: 37%;
-            transform: translateY(-50%);
+            height: 6vh;
+            width: 90%;
+            margin-left: 30px;
+            margin-right: auto;
           }
           }
       }
@@ -207,6 +206,34 @@ $primary-color: #3598DC;
         .landing-subcontainer {
           margin-left: 5%;
           margin-right: 5%;
+        }
+      }
+    }
+
+    @media screen and (max-width:611px) {
+      .main-container {
+        h1 {
+          font-size: 2em;
+        }
+        .landing-subcontainer {
+          height: 85vh;
+        }
+      }
+    }
+
+    @media screen and (max-width:466px) {
+      .main-container {
+        h1 {
+          font-size: 2em;
+        }
+        .landing-subcontainer {
+          height: 95vh;
+          .placeholder-class {
+            button {
+              margin-left: 0;
+              margin-right: auto;
+            }
+          }
         }
       }
     }
