@@ -26,11 +26,16 @@
             <button @click="QRandTemp()">QR and Temperature</button>
             <button @click="QROnly()">QR Only</button>
             <button @click="TempOnly()">Temperature Only</button>
+            <nuxt-link :to="{ name: 'contact', params: { access2: this.$route.params.access  } }">
+                    <button class="contact-btn" :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
+                     View Contact Tracing
+                    </button>
+            </nuxt-link>
         </div>
       </div>
       <div class="classss" v-else>
           <h1>
-          Pangit ka! Wag ka dito
+          Access Denied
       </h1>
       </div>
   </div>
@@ -130,8 +135,15 @@ export default {
 $primary-color: #3598DC;
     .main {
         font-family: Arial, Helvetica, sans-serif;
-        background-color: #3598DC;
+        width: 100vw;
+        min-height: 100vh;
+        background-color: $primary-color;
         .classss {
+            h1 {
+                padding-top: 20px;
+                text-align: center;
+                color: white;
+            }
             .control-button {
                 margin-left: 10%;
                 margin-right: 10%;
@@ -157,6 +169,14 @@ $primary-color: #3598DC;
                 button {
                     background-color: white;
                     color: $primary-color;
+                    height: 38px;
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .contact-btn {
+                    background-color: rgb(30, 88, 224);
+                    color: white;
                     height: 38px;
                     width: 100%;
                     margin-top: 10px;
