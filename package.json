@@ -13,6 +13,7 @@
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
     "qrcode.vue": "^3.3.3",
+    "select-philippines-address": "^1.0.5",
     "vee-validate": "^3.4.13",
     "vue-qr": "^3.2.2",
     "vue2-datepicker": "^3.10.2",
@@ -21,6 +22,8 @@
   "devDependencies": {
     "@nuxt/types": "^2.15.7",
     "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/vuetify": "^1.12.1"
+    "@nuxtjs/vuetify": "^1.12.1",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.2"
   }
 }

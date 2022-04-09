@@ -16,7 +16,7 @@
                 <tr v-for="data in this.newDataName" :key="data.id">
                     <td>{{data.name}}</td>
                     <td>{{(data.appointmentStart).substring(0,10)}}</td>
-                    <td>{{data.TempData}}</td>
+                    <td>{{data.TempData}} Celcius</td>
                     <td>{{data.phoneNumber}}</td>                    
                 </tr>
               </table>
@@ -35,7 +35,7 @@
                 <tr v-for="data in this.newData" :key="data.id">
                     <td>{{data.name}}</td>
                     <td>{{data.Date}}</td>
-                    <td>{{data.TempData}}</td>
+                    <td>{{data.TempData}} Celcius</td>
                     <td>{{data.phoneNumber}}</td>                    
                 </tr>
               </table>
