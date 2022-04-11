@@ -314,7 +314,7 @@
         onCreatePost() {
             this.isLoading = true
             axios
-            .get('http://dt-iotdoorlock.online?filter[appointmentStart]='+this.time1)
+            .get('http://dt-iotdoorlock.online/site/jsondata?filter[appointmentStart]='+this.time1)
             .then(response => {
                 this.availableData = response.data
                 let availableDataCount = Object.keys(response.data).length

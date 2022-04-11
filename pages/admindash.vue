@@ -69,7 +69,7 @@ export default {
         this.todayDate = dateNgayon
 
         axios
-            .get('http://dt-iotdoorlock.online?filter[appointmentStart]='+dateToday)
+            .get('http://dt-iotdoorlock.online/site/jsondata?filter[appointmentStart]='+dateToday)
             //.get('http://dt-iotdoorlock.online')
             .then(response => {
             this.allData = response.data
