@@ -316,18 +316,16 @@
             axios
             .get('http://dt-iotdoorlock.online/site/jsondata?filter[appointmentStart]='+this.time1)
             .then(response => {
-                this.availableData = response.data
-                let availableDataCount = Object.keys(response.data).length
-
                 let bool = true;
                 let bool2 = false;
+                this.availableData = response.data
+                let availableDataCount = Object.keys(response.data).length
+                console.log(response.data)
 
                 //Check for Duplicate Entry in a Day
                 for (let i = 0; i<response.data.length; i++) {
-                    if (((this.first_name + " " + this.last_name) == response.data[i].name || 
-                        this.email == response.data[i].email ) &&
-                        (this.houseNum+ " " + this.barangay + " " + this.city + " " + this.province + " " + this.region) == response.data[i].address
-                        ) {
+                    if ((this.first_name + " " + this.last_name) == response.data[i].name &&
+                        this.email == response.data[i].email) {
                         console.log(response.data[i].name)
                         console.log(response.data[i].email)
                         console.log(response.data[i].address)
@@ -343,8 +341,10 @@
                 }
                 else {
                     this.verifyMessage = "The Date is Full. Please pick a new date"
-                    bool2 = false
                 }
+
+                console.log(bool.toString())
+                console.log(bool2.toString())
                 
                 //Assess the 2 logics
                 if (bool2 && bool) {
