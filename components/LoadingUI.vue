@@ -17,7 +17,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: '#41b883',
+      default: '#3598DC',
     },
     scale: {
       type: Number,
@@ -37,11 +37,12 @@ export default {
 
 <style scoped>
 .preloader {
-  position: relative;
+  position: absolute;
   width: 125px;
   height: 125px;
   margin: auto;
   transform: scale(var(--scale));
+
 }
 .preloader > span {
   position: absolute;

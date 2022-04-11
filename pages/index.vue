@@ -1,5 +1,8 @@
 <template>
   <div class="main-container">
+    <!-- <div class="loading-div">
+      <LoadingUI/>
+    </div> -->
     <div class="landing-subcontainer">
 
         <img src="https://images.unsplash.com/photo-1521386455230-4ceaa25b72be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="lock" class="image">
@@ -40,7 +43,13 @@
 </template>
 
 <script>
+// import LoadingUI from '../components/LoadingUI.vue'
+
+
 export default {
+    // components: {
+    //   LoadingUI
+    // },
     data() {
       return {
         nname: '',
@@ -86,15 +95,25 @@ export default {
 $primary-color: #3598DC;
    .main-container {
     font-family: Arial, Helvetica, sans-serif;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     background-color: $primary-color;
     padding: 100px 0px 100px 0px;
+
+    // .loading-div {
+    //   position: absolute;
+    //   height: 100vh;
+    //   width: 100%;
+    //   display: grid;
+    //   place-items: center;
+    //   background-color: rgba(0,0,0,0.2);
+    // }
     
     .landing-subcontainer {
       height: 70vh;
       margin-left: 20%;
       margin-right: 20%;
+      // padding-top: 100px;
       background-color: white;
       border: solid 1px #bdbdbd;
       box-shadow: #777777 0px 0px 18px;

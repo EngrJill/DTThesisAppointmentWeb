@@ -1,5 +1,9 @@
 <template>
     <div class="main-container">
+        <div class="loading-div" :style="{display: loadingComponent}">
+            <LoadingUI/>
+            <p>Checking for Availability...</p>
+        </div>
         <div class="landing-subcontainer">
             <div class="header">
                 <div class="content">
@@ -74,7 +78,7 @@
                         </div>
                         <div class="failed" v-if="this.isFailed">
                             <h5>Appointment Failed!</h5>
-                            <p>Please pick a different date</p>
+                            <p>{{verifyMessage}}</p>
                         </div>
                     <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify</button>
                     <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
@@ -94,9 +98,10 @@
    import VueQr from 'vue-qr';
    import axios from 'axios'
    import {regions, provinces, cities, barangays} from 'select-philippines-address';
+   import LoadingUI from '../components/LoadingUI.vue'
 
   export default {
-    components: { DatePicker, VueQr },
+    components: { DatePicker, VueQr, LoadingUI },
     data() {
       return {
         availableData: [],
@@ -119,7 +124,9 @@
         province: '',
         city: '',
         barangay: '',
-        houseNum: ''
+        houseNum: '',
+        isLoading: false,
+        verifyMessage: ''
       };
     },
     created() {
@@ -128,6 +135,14 @@
     });
     },
     computed: {
+        loadingComponent: function() {
+            if (this.isLoading) {
+                return 'grid'
+            } 
+            else {
+                return 'none'
+            }
+        },
         //Button will be disabled (Not Clickable) for Verify Button
         btnDisabled: function() {
             if (this.time1.length != 0 && 
@@ -297,14 +312,42 @@
 
         //This Function POST an HTTP request to the server
         onCreatePost() {
+            this.isLoading = true
             axios
             .get('http://dt-iotdoorlock.online?filter[appointmentStart]='+this.time1)
             .then(response => {
                 this.availableData = response.data
                 let availableDataCount = Object.keys(response.data).length
-                console.log(availableDataCount)
 
+                let bool = true;
+                let bool2 = false;
+
+                //Check for Duplicate Entry in a Day
+                for (let i = 0; i<response.data.length; i++) {
+                    if (((this.first_name + " " + this.last_name) == response.data[i].name || 
+                        this.email == response.data[i].email ) &&
+                        (this.houseNum+ " " + this.barangay + " " + this.city + " " + this.province + " " + this.region) == response.data[i].address
+                        ) {
+                        console.log(response.data[i].name)
+                        console.log(response.data[i].email)
+                        console.log(response.data[i].address)
+                        this.verifyMessage = "Duplicate Entry Found. Please Pick a new date"
+                        bool = false
+                        break
+                    }
+                }
+
+                //Check if the number of Appointment Exceeded 21
                 if (availableDataCount<21) {
+                    bool2 = true
+                }
+                else {
+                    this.verifyMessage = "The Date is Full. Please pick a new date"
+                    bool2 = false
+                }
+                
+                //Assess the 2 logics
+                if (bool2 && bool) {
                     axios
                         .post('http://dt-iotdoorlock.online/api/user_appointment_details',{
                                     "name": this.first_name + " " + this.last_name,
@@ -318,6 +361,7 @@
                                     "qrCode": this.qrCode
                                     })
                         .then((response) => {
+                            this.isLoading = false
                             this.isSuccess = true
                             this.isFailed = false
                             console.log(response);
@@ -325,6 +369,7 @@
                         })
                 }
                 else {
+                    this.isLoading = false
                     this.isFailed = true
                     this.isSuccess = false
                 }
@@ -332,6 +377,9 @@
             .catch(error => {
                 console.log(error)
              })
+            //  .finally(() => 
+            //     this.isLoading = false
+            //  )
 
         },
 
@@ -377,6 +425,21 @@ $primary-color: #3598DC;
         width: min(100vw, 100%);
         background-color: $primary-color;
         padding: 100px 0px 100px 0px;
+
+        .loading-div {
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            height: 100%;
+            padding-top: 100px;
+            place-items: center;
+            background-color: rgba(0,0,0,0.5);
+            p {
+                margin-top: 70px;
+                color: white;
+            }
+        }
     
         .landing-subcontainer {
             height: 90%;
