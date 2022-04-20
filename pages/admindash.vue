@@ -26,9 +26,22 @@
             <button @click="QRandTemp()">QR and Temperature</button>
             <button @click="QROnly()">QR Only</button>
             <button @click="TempOnly()">Temperature Only</button>
+            <h1>Set User Limit</h1>
+            <h2>Current Limit: {{user_limit}}</h2>
+            <label for="input_limit">Please Input Desired Limit</label>
+            <input type="number" v-model="input_user_limit">
+            <button @click="SetUserLimit()">Set User Limit</button>
+            <h1>
+                Open/Close Appointment System
+            </h1>
+            <h2>System is {{open_system}}</h2>
+            <button @click="OpenOrCloseSystem()">{{not_open_system}} Appointment System</button>
+            <h1>
+                View Appointment Logs
+            </h1>
             <nuxt-link :to="{ name: 'contact', params: { access2: this.$route.params.access  } }">
-                    <button class="contact-btn" :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
-                     View Contact Tracing
+                    <button class="contact-btn">
+                     View
                     </button>
             </nuxt-link>
         </div>
@@ -36,7 +49,7 @@
       <div class="classss" v-else>
           <h1>
           Access Denied
-      </h1>
+          </h1>
       </div>
   </div>
 </template>
@@ -52,7 +65,13 @@ export default {
             count: 0,
             todayDate: '',
             accessButton: false,
-            accessButtonText: ''
+            accessButtonText: '',
+            adminAccessData: [],
+            user_limit: 0,
+            open_system: null,
+            not_open_system: null,
+            input_user_limit: null,
+
         }
     },
     mounted() {
@@ -70,7 +89,6 @@ export default {
 
         axios
             .get('http://dt-iotdoorlock.online/site/jsondata?filter[appointmentStart]='+dateToday)
-            //.get('http://dt-iotdoorlock.online')
             .then(response => {
             this.allData = response.data
             this.count = Object.keys(response.data).length
@@ -80,6 +98,25 @@ export default {
             this.errored = true
              })
             .finally(() => this.loading = false)
+
+        axios
+            .get('http://dt-iotdoorlock.online/api/admin_accesses')
+                .then(response => {
+                this.adminAccessData = response.data
+                this.user_limit = response.data[0].user_limit
+
+                if (response.data[0].open_system == "True") {
+                    this.open_system = "Open"
+                    this.not_open_system = "Close"
+                } else {
+                    this.open_system = "Close"
+                    this.not_open_system = "Open"
+                }
+
+                })
+                .catch(error => {
+                console.log(error)
+                })
     },
     methods: {
         QRandTemp: function() {
@@ -127,6 +164,48 @@ export default {
                     this.$emit('postcreated');
                 });
         },
+
+        SetUserLimit:function() {
+            axios
+                .put('http://dt-iotdoorlock.online/api/admin_accesses/update',{    
+                    "id": 1,
+                    "user_limit": this.input_user_limit,
+                    "open_system": this.open_system
+                    })
+                .then((response) => {
+                    this.user_limit = this.input_user_limit
+                    console.log(response);
+                    this.$emit('postcreated');
+                });
+        },
+        OpenOrCloseSystem:function() {
+            let current = ""
+
+            if (this.open_system == "Open") {
+                current = "False"
+            } else {
+                current = "True"
+            }
+
+            axios
+                .put('http://dt-iotdoorlock.online/api/admin_accesses/update',{    
+                    "id": 1,
+                    "user_limit": this.user_limit,
+                    "open_system": current
+                    })
+                .then((response) => {
+                    console.log(current)
+                    console.log(response);
+                    this.$emit('postcreated');
+                    if (current == "True") {
+                        this.open_system = "Open"
+                        this.not_open_system = "Close"
+                    } else {
+                        this.open_system = "Close"
+                        this.not_open_system = "Open"
+                    }
+                });
+        }
     }
 }
 </script>
@@ -151,6 +230,18 @@ $primary-color: #3598DC;
                 padding-top: 15px;
                 text-align: center;
                 padding-bottom: 30px;
+                
+                input {
+                    background-color: #F4F1F1;
+                    height: 38px;
+                    width: 50%;
+                    margin-top: 10px;
+                    margin-bottom: 7px;
+                    margin-left: 10%;
+                    margin-right: 10%;
+                    padding-left: 8px;
+                    border: solid black 2px;
+                }
 
                 .success {
                     background-color: #8AFF80;

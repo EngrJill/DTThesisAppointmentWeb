@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
       <div class="landing-subcontainer" v-if="this.$route.params.access2">
-          <h1>Contact Tracing Table</h1>
+          <h1>Entry Logs</h1>
           <label for="">Search a Name</label>
           <input type="text" v-model="name">
           <button @click="checkContactName">Check Name</button>
@@ -11,12 +11,16 @@
                     <th>Name</th>
                     <th>Date of Entry</th>
                     <th>Temperature Data</th>
+                    <th>Address</th>
+                    <th>Appointment Location</th>
                     <th>Contact Number</th>
                 </tr>
                 <tr v-for="data in this.newDataName" :key="data.id">
                     <td>{{data.name}}</td>
                     <td>{{(data.appointmentStart).substring(0,10)}}</td>
                     <td>{{data.TempData}} Celcius</td>
+                    <td>{{data.address}}</td>
+                    <td>{{data.appointment_location}}</td>
                     <td>{{data.phoneNumber}}</td>                    
                 </tr>
               </table>
@@ -24,22 +28,27 @@
 
           <date-picker style="width=80%; margin-left: 30%" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
           <button @click="checkContact()">Check Entries</button>
-          <div class="table-container-dateSearch">
+          <div class="table-container-dateSearch" ref="document">
               <table>
                 <tr>
                     <th>Name</th>
                     <th>Date of Entry</th>
                     <th>Temperature Data</th>
+                    <th>Address</th>
+                    <th>Appointment Location</th>
                     <th>Contact Number</th>
                 </tr>
-                <tr v-for="data in this.newData" :key="data.id">
+                <tr v-for="data in this.newData" :key="data.id" >
                     <td>{{data.name}}</td>
-                    <td>{{data.Date}}</td>
+                    <td>{{(data.appointmentStart).substring(0,10)}}</td>
                     <td>{{data.TempData}} Celcius</td>
+                    <td>{{data.address}}</td>
+                    <td>{{data.placeAppointment}}</td>
                     <td>{{data.phoneNumber}}</td>                    
                 </tr>
               </table>
           </div>
+          <button @click="exportToPDF" style="backgroundColor: Blue;color:white">Print/Save as PDF</button>
       </div>
       <div class="landing-subcontainer" v-else>
         <h1>Access Denied</h1>
@@ -51,9 +60,7 @@
 import axios from 'axios';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-
-
-
+import html2pdf from 'html2pdf.js';
 
 export default {
     components: { DatePicker },
@@ -75,7 +82,7 @@ export default {
     },
     mounted() {
          axios
-            .get('http://dt-iotdoorlock.online')
+            .get('http://dt-iotdoorlock.online/site/jsondata')
             .then(response => {
             this.allData = response.data
             })
@@ -178,7 +185,16 @@ export default {
             }
 
             return this.newDataName = newdataname
-        }
+        },
+        exportToPDF () {
+				html2pdf(this.$refs.document, {
+					margin: 1,
+					filename: 'peopleLog.pdf',
+					image: { type: 'jpeg', quality: 0.98 },
+					html2canvas: { dpi: 192, letterRendering: true },
+					jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+				})
+		}
     },
             }
 </script>
@@ -203,7 +219,7 @@ $primary-color: #3598DC;
             margin-right: 10%;
 
             .table-container-dateSearch, .table-container-nameSearch {
-                margin-bottom: 25px;
+                margin-bottom: 10px;
                 table {
                     border: 1px solid #ccc;
                     border-collapse: collapse;
@@ -238,7 +254,7 @@ $primary-color: #3598DC;
             }
 
             .table-container-dateSearch {
-                padding-bottom: 100px;
+                padding-bottom: 20px;
             }
 
             button {

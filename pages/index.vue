@@ -1,8 +1,10 @@
 <template>
   <div class="main-container">
-    <!-- <div class="loading-div">
-      <LoadingUI/>
-    </div> -->
+    <div class="not-accepting" :style="{display: if_open_system}">
+      <h1>
+        Apologies. The System is not Accepting any appointments today.<br> Please come back on other dates.
+      </h1>
+    </div>
     <div class="landing-subcontainer">
 
         <img src="https://images.unsplash.com/photo-1521386455230-4ceaa25b72be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="lock" class="image">
@@ -30,7 +32,7 @@
                 </label><br>
               </div>
 
-              <nuxt-link :to="{ name: 'appointment', params: { nname: this.nname } }">
+              <nuxt-link :to="{ name: 'appointment', params: { nname: this.nname, access: true } }">
                 <button :disabled="stillDisable" :style="{backgroundColor: disable_blue}">
                   PROCEED
                 </button>
@@ -44,6 +46,7 @@
 
 <script>
 // import LoadingUI from '../components/LoadingUI.vue'
+import axios from 'axios'
 
 
 export default {
@@ -53,10 +56,36 @@ export default {
     data() {
       return {
         nname: '',
-        checked: false
+        checked: false,
+        adminAccessData: [],
+        open_system: true
       }
     },
+    mounted() {
+        axios
+            .get('http://dt-iotdoorlock.online/api/admin_accesses')
+            .then(response => {
+            this.adminAccessData = response.data
+            if(response.data[0].open_system == "False") {
+              this.open_system = false
+            }
+            else {
+              this.open_system = true
+            }
+            })
+            .catch(error => {
+            console.log(error)
+             })
+    },
     computed: {
+      if_open_system: function() {
+        if (this.open_system) {
+          return 'none'
+        }
+        else {
+          return 'block'
+        }
+      },
       disable_black: function() {
         if (this.checked === false) {
           return 'gray'
@@ -109,6 +138,22 @@ $primary-color: #3598DC;
     //   background-color: rgba(0,0,0,0.2);
     // }
     
+    .not-accepting {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background-color: rgba(0,0,0,0.6);
+      height: 100vh;
+      h1 {
+        margin-top: 23%;
+        margin-left: 20%;
+        margin-right: 20%;
+        text-align: center;
+        color: white;
+      }
+
+    }
+
     .landing-subcontainer {
       height: 70vh;
       margin-left: 20%;

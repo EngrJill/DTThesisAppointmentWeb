@@ -1,93 +1,100 @@
 <template>
     <div class="main-container">
-        <div class="loading-div" :style="{display: loadingComponent}">
-            <LoadingUI/>
-            <p>Checking for Availability...</p>
-        </div>
-        <div class="landing-subcontainer">
-            <div class="header">
-                <div class="content">
-                    <h3>Hello, {{this.$route.params.nname}}. Good Day!</h3>
-                    <h7>Kindly fill-out this form for your Appointment</h7>
-                    <p :style="{display: requiredTrigger}">All fields are required</p>
+        <div class="con" v-if="this.$route.params.access">
+            <div class="loading-div" :style="{display: loadingComponent}">
+                <LoadingUI/>
+                <p>Checking for Availability...</p>
+            </div>
+            <div class="landing-subcontainer">
+                <div class="header">
+                    <div class="content">
+                        <h3>Hello, {{this.$route.params.nname}}. Good Day!</h3>
+                        <h7>Kindly fill-out this form for your Appointment</h7>
+                        <p :style="{display: requiredTrigger}">All fields are required</p>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <form @submit.prevent="onCreatePost" class="form">
+                        <label for="first_name">First Name</label><br>
+                        <input type="text" placeholder="Input First Name" v-model="first_name"><br>
+                        <label for="">Last Name</label><br>
+                        <input type="text" placeholder="Input Last Name" v-model="last_name"><br>
+                        <label for="address">Address</label><br>
+
+                        <!-- Dropdown Address Code here! -->
+                        <div class="custom-select">
+                            <!-- Code for Selecting Region -->
+                            <select @change="handleProvince">
+                                <option disabled selected>Select Region</option>
+                                <option v-for="region in regions" :value="region.region_code" :key="region.region_code">{{
+                                    region.region_name
+                                    }}
+                                </option>
+                            </select>
+
+                                <br/><br/>
+
+                            <!-- Code for Selecting Province -->
+                            <select @change="handleCity">
+                                <option disabled selected>Select Province</option>
+                                <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
+                                    {{ province.province_name }}
+                                </option>
+                            </select>
+
+                                <br/><br/>
+
+                            <!-- Code for Selecting City or Town -->
+                            <select @change="handleBarangay">
+                                <option disabled selected>Select City</option>
+                                <option v-for="city in cities" :value="city.city_code" :key="city.city_code">{{ city.city_name }}</option>
+                                </select>
+                            <br/><br/>
+
+                            <!-- Code for Selecting Barangay -->
+                            <select @change="barangaysChange">
+                                <option disabled selected>Select Barangay</option>
+                                <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">{{
+                                    barangay.brgy_name
+                                    }}
+                                </option>
+                            </select>
+                            <input type="text" placeholder="House Number/Street/Purok Name" v-model="houseNum"><br>
+                        </div>
+
+                        <label for="">Contact Number <span :style="{display: contactTrigger}" style="color: orange; font-size: 0.8rem" class="contact-trigger">*Contact Number must be 11 digit</span></label><br>
+                        <input type="number" placeholder="Input Contact Number" v-model="contact_number"><br>
+                        <label for="">Email</label><br>
+                        <input type="email" placeholder="Input Email" v-model="email"><br>
+                        <label for="">Appointment Location</label><br>
+                        <input type="text" placeholder="Input Appointment Location" v-model="appointment_location"><br>
+                        <label for="">Appointment Purpose</label><br>
+                        <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
+                        <label for="">Appointment date</label><br>
+                        <date-picker style="height: 46px; width: min(220px, 50%)" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
+                        <p :style="{display:dateChecker}">The Date must be a Future Date</p>
+                            <div class="success" v-if="this.isSuccess">
+                                <h5>Appointment Verified!</h5>
+                                <p>Please click the <strong>View QR</strong> to View your QR Code</p>
+                            </div>
+                            <div class="failed" v-if="this.isFailed">
+                                <h5>Appointment Failed!</h5>
+                                <p>{{verifyMessage}}</p>
+                            </div>
+                        <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify</button>
+                        <nuxt-link :to="{ name: 'final', params: { access: true, pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
+                            <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
+                            View QR
+                            </button>
+                        </nuxt-link>
+                    </form>
                 </div>
             </div>
-            <div class="form-container">
-                <form @submit.prevent="onCreatePost" class="form">
-                    <label for="first_name">First Name</label><br>
-                    <input type="text" placeholder="Input First Name" v-model="first_name"><br>
-                    <label for="">Last Name</label><br>
-                    <input type="text" placeholder="Input Last Name" v-model="last_name"><br>
-                    <label for="address">Address</label><br>
-
-                    <!-- Dropdown Address Code here! -->
-                    <div class="custom-select">
-                        <!-- Code for Selecting Region -->
-                        <select @change="handleProvince">
-                            <option disabled selected>Select Region</option>
-                            <option v-for="region in regions" :value="region.region_code" :key="region.region_code">{{
-                                region.region_name
-                                }}
-                            </option>
-                        </select>
-
-                            <br/><br/>
-
-                        <!-- Code for Selecting Province -->
-                        <select @change="handleCity">
-                            <option disabled selected>Select Province</option>
-                            <option v-for="province in provinces" :value="province.province_code" :key="province.province_code">
-                                {{ province.province_name }}
-                            </option>
-                        </select>
-
-                            <br/><br/>
-
-                        <!-- Code for Selecting City or Town -->
-                        <select @change="handleBarangay">
-                            <option disabled selected>Select City</option>
-                            <option v-for="city in cities" :value="city.city_code" :key="city.city_code">{{ city.city_name }}</option>
-                            </select>
-                        <br/><br/>
-
-                        <!-- Code for Selecting Barangay -->
-                        <select @change="barangaysChange">
-                            <option disabled selected>Select Barangay</option>
-                            <option v-for="barangay in barangays" :value="barangay.brgy_code" :key="barangay.brgy_code">{{
-                                barangay.brgy_name
-                                }}
-                            </option>
-                        </select>
-                        <input type="text" placeholder="House Number/Street/Purok Name" v-model="houseNum"><br>
-                    </div>
-
-                    <label for="">Contact Number <span :style="{display: contactTrigger}" style="color: orange; font-size: 0.8rem" class="contact-trigger">*Contact Number must be 11 digit</span></label><br>
-                    <input type="number" placeholder="Input Contact Number" v-model="contact_number"><br>
-                    <label for="">Email</label><br>
-                    <input type="email" placeholder="Input Email" v-model="email"><br>
-                    <label for="">Appointment Location</label><br>
-                    <input type="text" placeholder="Input Appointment Location" v-model="appointment_location"><br>
-                    <label for="">Appointment Purpose</label><br>
-                    <input type="text" placeholder="Input Appointment Purpose" v-model="appointment_purpose"><br>
-                    <label for="">Appointment date</label><br>
-                    <date-picker style="height: 46px; width: min(220px, 50%)" v-model="time1" valueType="format" placeholder="Please pick a date"></date-picker><br>
-                    <p :style="{display:dateChecker}">The Date must be a Future Date</p>
-                        <div class="success" v-if="this.isSuccess">
-                            <h5>Appointment Verified!</h5>
-                            <p>Please click the <strong>View QR</strong> to View your QR Code</p>
-                        </div>
-                        <div class="failed" v-if="this.isFailed">
-                            <h5>Appointment Failed!</h5>
-                            <p>{{verifyMessage}}</p>
-                        </div>
-                    <button :disabled="btnDisabled2" :style="{backgroundColor: btnColorDisabled2}" type="submit">Verify</button>
-                    <nuxt-link :to="{ name: 'final', params: { pangalan: this.first_name, code: hashFunction(), time: convertToReadableDate(), date: this.time1  } }">
-                        <button :disabled="btnDisabled" :style="{backgroundColor: btnColorDisabled}">
-                        View QR
-                        </button>
-                    </nuxt-link>
-                </form>
-            </div>
+        </div>
+        <div class="con" v-else>
+            <h1>
+                Access Denied
+            </h1>
         </div>
     </div>
 </template>
@@ -126,13 +133,34 @@
         barangay: '',
         houseNum: '',
         isLoading: false,
-        verifyMessage: ''
+        verifyMessage: '',
+        adminAccessData: [],
+        user_limit: 0,
+        shortcuts: [
+        {
+          text: 'Today',
+          onClick: () => {
+            this.time3 = [ new Date(), new Date() ]
+          }
+        }
+      ],
       };
     },
     created() {
         regions().then(response => {
         this.regions = response;
     });
+    },
+    mounted() {
+        axios
+            .get('http://dt-iotdoorlock.online/api/admin_accesses')
+            .then(response => {
+            this.adminAccessData = response.data
+            this.user_limit = response.data[0].user_limit
+            })
+            .catch(error => {
+            console.log(error)
+             })
     },
     computed: {
         loadingComponent: function() {
@@ -316,19 +344,31 @@
             axios
             .get('http://dt-iotdoorlock.online/site/jsondata?filter[appointmentStart]='+this.time1)
             .then(response => {
+                //This Booelan is for Duplicate Entries
                 let bool = true;
+                //This Boolean is for User Limit
                 let bool2 = false;
+                //This Boolean is for Sunday
+                let bool3 = false;
+                //This Boolean is for Holidays
+                let bool4 = true;
+
                 this.availableData = response.data
                 let availableDataCount = Object.keys(response.data).length
-                console.log(response.data)
+                
+                let holidays_date = ["2022-04-14", "2022-04-15", "2022-05-01", "2022-05-02" , "2022-05-03", "2022-06-13", 
+                                    "2022-07-09", "2022-07-10", "2022-08-29", "2022-11-01", "2022-11-30", "2022-12-08", "2022-12-25", "2022-12-30"  
+                                ]
+                let holidays_name = ["Maundy Thursday", "Good Friday", "Labour Day", "Eid al-Fitr", "Eid al-Fitr", "Philippines Independence Day",
+                                    "Eid al-Adha", "Eid al-Adha", "National Heroes' Day", "All Saint's Day", "Bonifacio Day", "Feast of the Immaculate Conception",
+                                    "Christmas", "Rizal Day"
+                                    ]
+                                
 
                 //Check for Duplicate Entry in a Day
                 for (let i = 0; i<response.data.length; i++) {
                     if ((this.first_name + " " + this.last_name) == response.data[i].name &&
                         this.email == response.data[i].email) {
-                        console.log(response.data[i].name)
-                        console.log(response.data[i].email)
-                        console.log(response.data[i].address)
                         this.verifyMessage = "Duplicate Entry Found. Please Pick a new date"
                         bool = false
                         break
@@ -336,18 +376,36 @@
                 }
 
                 //Check if the number of Appointment Exceeded 21
-                if (availableDataCount<21) {
+                if (availableDataCount<this.user_limit) {
                     bool2 = true
                 }
                 else {
                     this.verifyMessage = "The Date is Full. Please pick a new date"
                 }
 
-                console.log(bool.toString())
-                console.log(bool2.toString())
-                
-                //Assess the 2 logics
-                if (bool2 && bool) {
+                //check if date is a Sunday
+                let day = new Date(this.time1);
+                if((day.toString().substring(0,3)) != "Sun") {
+                    console.log((day.toString().substring(0,3)))
+                    bool3 = true
+                    console.log("Not Sunday")
+                } else {
+                    this.verifyMessage = "The Date is a Sunday"
+                    console.log("Sunday")
+                }
+
+                //Check if date is a Holday
+                for (let i = 0; i<holidays_date.length; i++) {
+                    if (holidays_date[i] == this.time1) {
+                        this.verifyMessage = "The Date is " + holidays_name[i]
+                        console.log("The Date is " + holidays_name[i])
+                        bool4 = false
+                        break
+                    }
+                }
+
+                //Assess the 4 logics
+                if (bool2 && bool && bool3 && bool4) {
                     axios
                         .post('http://dt-iotdoorlock.online/api/user_appointment_details',{
                                     "name": this.first_name + " " + this.last_name,
@@ -364,7 +422,6 @@
                             this.isLoading = false
                             this.isSuccess = true
                             this.isFailed = false
-                            console.log(response);
                             this.$emit('postcreated');
                         })
                 }
@@ -425,6 +482,13 @@ $primary-color: #3598DC;
         width: min(100vw, 100%);
         background-color: $primary-color;
         padding: 100px 0px 100px 0px;
+
+        .con {
+            h1 {
+                text-align: center;
+                color: white;
+            }
+        }
 
         .loading-div {
             position: fixed;

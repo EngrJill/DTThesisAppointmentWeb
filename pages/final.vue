@@ -1,24 +1,30 @@
-
 <template>
   <div class="main-container">
-    <div class="landing-subcontainer">
-       <div class="header">
-          <div class="content">
-            <h1> <span style="font-weight: 200" >See you on </span> {{this.$route.params.time}}, {{this.$route.params.pangalan}} </h1>
-            <p>These are the Instructions we made for your convenience using our device</p>
-          </div>
+    <div class="con" v-if="this.$route.params.access">
+      <div class="landing-subcontainer">
+        <div class="header">
+            <div class="content">
+              <h1> <span style="font-weight: 200" >See you on </span> {{this.$route.params.time}}, {{this.$route.params.pangalan}} </h1>
+              <p>These are the Instructions we made for your convenience using our device</p>
+            </div>
+        </div>
+        <div class="txt-container">
+            <p>1. Save this QR Code</p>
+            <vue-qr  id="vueQr" colorDark="black" colorLight="white" margin=20 :text="this.$route.params.code" style="width: min(500vw, 70%)" size=300 > </vue-qr>
+            <a :href="this.vueQrData" :download="this.filename">
+              <button @click="downloadQR()">Save QR</button>
+            </a>
+            <p>2. Tap the Scan QR button on the device monitor </p>
+            <p>3. Scan the QR Code</p>
+            <p>4. Scan your Temperature by placing your hand in front of the IR Temperature Scanner</p>
+            <p>5. Thats it! The Door Lock will unlock by now!</p>
+        </div>
       </div>
-      <div class="txt-container">
-          <p>1. Save this QR Code</p>
-          <vue-qr  id="vueQr" colorDark="black" colorLight="white" margin=20 :text="this.$route.params.code" style="width: min(500vw, 70%)" size=300 > </vue-qr>
-          <a :href="this.vueQrData" :download="this.filename">
-            <button @click="downloadQR()">Save QR</button>
-          </a>
-          <p>2. Tap the Scan QR button on the device monitor </p>
-          <p>3. Scan the QR Code</p>
-          <p>4. Scan your Temperature by placing your hand in front of the IR Temperature Scanner</p>
-          <p>5. Thats it! The Door Lock will unlock by now!</p>
-      </div>
+    </div>
+    <div class="con" v-else>
+      <h1>
+        Access Denied
+      </h1>
     </div>
   </div>
 </template>
@@ -56,6 +62,13 @@ $primary-color: #3598DC;
     width: min(100vw, 100%);
     background-color: $primary-color;
     padding: 100px 0px 100px 0px;
+
+    .con {
+      h1 {
+        text-align: center;
+        color: white;
+      }
+    }
     
     .landing-subcontainer {
       height: 70vh;
@@ -75,6 +88,9 @@ $primary-color: #3598DC;
                 position: relative;
                 
                 .content {
+                  h1 {
+                    color: black;
+                  }
                     text-align: center;
                     height: auto;
                     margin: 0 auto;
